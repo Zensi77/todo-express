@@ -11,7 +11,6 @@ export class HomeService {
   private _http = inject(HttpClient);
 
   readonly tasks = signal<Task[]>([]); // Signal para tareas
-  readonly users = signal<User[]>([]); // Signal para usuarios
 
   // Obtiene las tareas desde el backend
   getTasksObservable() {
@@ -24,14 +23,6 @@ export class HomeService {
     const url = environment.url_tasks;
     this._http.get<Task[]>(url).subscribe((tasks) => {
       this.tasks.set(tasks); // Actualiza el signal con las tareas obtenidas
-    });
-  }
-
-  // Obtiene los usuarios desde el backend
-  getUsers() {
-    const url = environment.url_users;
-    this._http.get<User[]>(url).subscribe((users) => {
-      this.users.set(users); // Actualiza el signal con los usuarios obtenidos
     });
   }
 

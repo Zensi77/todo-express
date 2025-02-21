@@ -18,48 +18,60 @@ import { DialogModule } from 'primeng/dialog'; // Importar el Dialog de PrimeNG
     DialogModule, // Asegurarse de importar el módulo del Dialog
   ],
   templateUrl: './taks-page.component.html',
-  styles: [],
+  styles: `
+  @keyframes fadeInHighlight {
+  from {
+    background-color: rgba(255, 193, 7, 0.4); /* Amarillo suave */
+  }
+  to {
+    background-color: transparent;
+  }
+}
+
+.animated-row {
+  animation: fadeInHighlight 0.7s ease-out;
+}
+
+  `,
 })
-export class TaksPageComponent implements OnInit {
+export class TaksPageComponent {
   private readonly _homeService = inject(HomeService);
   tasks = computed(() => this._homeService.tasks());
-  taskDialog = false; // Controla la visibilidad del modal
-  isEdit = false; // Determina si estamos editando o creando una tarea
-  selectedTask: Task = this.getEmptyTask(); // Inicializa la tarea seleccionada
+  taskDialog = false;
+  isEdit = false;
+  selectedTask: Task = this.getEmptyTask();
 
   constructor() {
     this._homeService.getTasks();
   }
 
-  ngOnInit(): void {}
-
   // Abre el modal para crear una nueva tarea
   openModal() {
-    this.selectedTask = this.getEmptyTask(); // Resetea la tarea
-    this.isEdit = false; // Establece el modo como creación
-    this.taskDialog = true; // Muestra el modal
+    this.selectedTask = this.getEmptyTask();
+    this.isEdit = false;
+    this.taskDialog = true;
   }
 
   // Abre el modal para editar una tarea
   editTask(task: Task) {
-    this.selectedTask = { ...task }; // Carga los datos de la tarea a editar
-    this.isEdit = true; // Establece el modo como edición
-    this.taskDialog = true; // Muestra el modal
+    this.selectedTask = { ...task };
+    this.isEdit = true;
+    this.taskDialog = true;
   }
 
   // Guarda la tarea, ya sea creando o editando
   saveTask() {
     if (this.isEdit) {
-      this._homeService.updateTask(this.selectedTask); // Edita la tarea
+      this._homeService.updateTask(this.selectedTask);
     } else {
-      this._homeService.addTask(this.selectedTask); // Crea una nueva tarea
+      this._homeService.addTask(this.selectedTask);
     }
-    this.taskDialog = false; // Cierra el modal
+    this.taskDialog = false;
   }
 
   // Elimina una tarea
   deleteTask(task: Task) {
-    this._homeService.deleteTask(task); // Llama al servicio para eliminar
+    this._homeService.deleteTask(task);
   }
 
   // Devuelve una tarea vacía para la creación
@@ -70,5 +82,31 @@ export class TaksPageComponent implements OnInit {
       completed: false,
       user: { nombre: '', email: '' },
     };
+  }
+
+  trackById(index: number, task: Task) {
+    return task ? task.title : index;
+  }
+
+  ngAfterViewInit() {
+    const tableBody = document.querySelector('p-table tbody') as HTMLElement;
+
+    if (tableBody) {
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          mutation.addedNodes.forEach((node) => {
+            if (node instanceof HTMLElement && node.tagName === 'TR') {
+              node.classList.add('animated-row');
+
+              setTimeout(() => {
+                node.classList.remove('animated-row');
+              }, 700);
+            }
+          });
+        });
+      });
+
+      observer.observe(tableBody, { childList: true });
+    }
   }
 }

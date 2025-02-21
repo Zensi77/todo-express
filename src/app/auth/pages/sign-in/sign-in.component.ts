@@ -21,7 +21,7 @@ export default class SignInComponent {
   private readonly fb = inject(NonNullableFormBuilder);
 
   readonly loginForm = this.fb.group({
-    nombre: ['', [Validators.required]],
+    email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
@@ -34,10 +34,10 @@ export default class SignInComponent {
       return;
     }
 
-    const nombre = this.loginForm.get('nombre')?.value as string;
+    const email = this.loginForm.get('email')?.value as string;
     const password = this.loginForm.get('password')?.value as string;
 
-    this._authService.login(nombre, password).subscribe(
+    this._authService.login(email, password).subscribe(
       (res) => {
         sessionStorage.setItem('token', res.token);
 

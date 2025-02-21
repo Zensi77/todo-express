@@ -1,139 +1,121 @@
-<section class="bg-gray-50 dark:bg-gray-900">
+<section
+  class="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center p-6"
+>
   <div
-    class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0"
+    class="w-full max-w-md bg-white rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 p-8"
   >
-    <a
-      href="#"
-      class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
-    >
-      Todo list
-    </a>
-    <div
-      class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
-    >
-      <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-        <h1
-          class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
-        >
-          Registro
-        </h1>
-        <form
-          [formGroup]="registerForm"
-          class="space-y-4 md:space-y-6"
-          (ngSubmit)="onSubmit()"
-        >
-          <div class="space-y-2">
-            <p-floatlabel variant="on">
-              <input
-                pInputText
-                class="bg-black p-2 w-full rounded-lg"
-                id="nombre"
-                formControlName="nombre"
-                autocomplete="off"
-              />
-              <label for="nombre">Nombre</label>
-            </p-floatlabel>
-            <span
-              *ngIf="
-                registerForm.get('nombre')?.errors &&
-                registerForm.get('nombre')?.touched
-              "
-              class="text-sm text-red-600"
-            >
-              {{ error("nombre") }}
-            </span>
-
-            <p-floatlabel variant="on">
-              <input
-                pInputText
-                class="bg-black p-2 w-full rounded-lg"
-                id="email"
-                formControlName="email"
-                autocomplete="off"
-              />
-              <label for="email">Email</label>
-            </p-floatlabel>
-            <span
-              *ngIf="
-                registerForm.get('email')?.errors &&
-                registerForm.get('email')?.touched
-              "
-              class="text-sm text-red-600"
-            >
-              {{ error("email") }}
-            </span>
-          </div>
-          <div>
-            <label
-              for="password"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >Contraseña</label
-            >
-            <p-password
-              formControlName="password"
-              promptLabel="Introduzca la contraseña"
-              [toggleMask]="true"
-              type="password"
-              name="password"
-              id="password"
-              placeholder="••••••••"
-              required=""
-            />
-            <span
-              *ngIf="
-                registerForm.get('password')?.errors &&
-                registerForm.get('password')?.touched
-              "
-              class="text-sm text-red-600"
-            >
-              {{ error("password") }}
-            </span>
-          </div>
-          <div>
-            <label
-              for="password"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >Repetir contraseña</label
-            >
-            <p-password
-              formControlName="confirmPassword"
-              [disabled]="disableCheckPassword()"
-              [feedback]="false"
-              [toggleMask]="true"
-              type="password"
-              name="password"
-              id="password"
-              placeholder="••••••••"
-            />
-            <span
-              *ngIf="
-                registerForm.get('confirmPassword')?.errors &&
-                registerForm.get('confirmPassword')?.touched
-              "
-              class="text-sm text-red-600"
-            >
-              {{ error("confirmPassword") }}
-            </span>
-          </div>
-          <div>
-            <button
-              type="submit"
-              [disabled]="registerForm.invalid"
-              class="w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-            >
-              Registro
-            </button>
-          </div>
-          <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-            Ya tienes cuenta?
-            <a
-              routerLink="/auth/sign-in"
-              class="cursor-pointer font-medium text-green-600 hover:underline dark:text-green-500"
-              >Iniciar sesion</a
-            >
-          </p>
-        </form>
-      </div>
+    <div class="text-center mb-6">
+      <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Registro</h1>
     </div>
+    <form [formGroup]="registerForm" class="space-y-7" (ngSubmit)="onSubmit()">
+      <div class="space-y-1">
+        <p-floatlabel>
+          <input
+            pInputText
+            class="bg-gray-200 dark:bg-gray-700 p-3 w-full rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+            id="nombre"
+            formControlName="nombre"
+            autocomplete="off"
+          />
+          <label for="nombre">Nombre</label>
+        </p-floatlabel>
+        <span
+          *ngIf="
+            registerForm.get('nombre')?.errors &&
+            registerForm.get('nombre')?.touched
+          "
+          class="text-sm text-red-500"
+        >
+          {{ error("nombre") }}
+        </span>
+      </div>
+
+      <div class="space-y-1">
+        <p-floatlabel>
+          <input
+            pInputText
+            class="bg-gray-200 dark:bg-gray-700 p-3 w-full rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+            id="email"
+            formControlName="email"
+            autocomplete="off"
+          />
+          <label for="email">Email</label>
+        </p-floatlabel>
+        <span
+          *ngIf="
+            registerForm.get('email')?.errors &&
+            registerForm.get('email')?.touched
+          "
+          class="text-sm text-red-500"
+        >
+          {{ error("email") }}
+        </span>
+      </div>
+
+      <div class="space-y-1">
+        <p-floatlabel>
+          <p-password
+            formControlName="password"
+            promptLabel="Introduzca la contraseña"
+            [toggleMask]="true"
+            class="w-full"
+            id="password"
+          />
+          <label for="password">Contraseña</label>
+        </p-floatlabel>
+        <span
+          *ngIf="
+            registerForm.get('password')?.errors &&
+            registerForm.get('password')?.touched
+          "
+          class="text-sm text-red-500"
+        >
+          {{ error("password") }}
+        </span>
+      </div>
+
+      <div class="space-y-1">
+        <p-floatlabel>
+          <p-password
+            formControlName="confirmPassword"
+            [disabled]="disableCheckPassword()"
+            [feedback]="false"
+            [toggleMask]="true"
+            class="w-full"
+            id="confirmPassword"
+          />
+          <label for="confirmPassword">Repetir contraseña</label>
+        </p-floatlabel>
+        <span
+          *ngIf="
+            registerForm.get('confirmPassword')?.errors &&
+            registerForm.get('confirmPassword')?.touched
+          "
+          class="text-sm text-red-500"
+        >
+          {{ error("confirmPassword") }}
+        </span>
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="registerForm.invalid"
+        class="w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-lg px-5 py-3 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 transition-all"
+      >
+        Registro
+      </button>
+
+      <p
+        class="text-center text-sm font-light text-gray-500 dark:text-gray-400"
+      >
+        ¿Ya tienes cuenta?
+        <a
+          routerLink="/auth/sign-in"
+          class="font-medium text-green-600 hover:underline dark:text-green-500"
+        >
+          Iniciar sesión
+        </a>
+      </p>
+    </form>
   </div>
 </section>

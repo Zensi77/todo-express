@@ -1,21 +1,40 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { Menubar } from 'primeng/menubar';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, CommonModule, Menubar],
-  template: '<p-menubar [model]="items" class="custom-menubar"></p-menubar>',
-  styles: `
-  .custom-menubar .pi {
-      color: #ff0000; /* Cambia este color al que desees */
-    }
+  imports: [CommonModule, Menubar, ButtonModule],
+  template: `
+    <p-menubar class="custom-menubar">
+      <ng-template pTemplate="end">
+        <button
+          pButton
+          label="Logout"
+          icon="pi pi-sign-out"
+          class="p-button-text"
+          (click)="logout()"
+        ></button>
+      </ng-template>
+    </p-menubar>
   `,
+  styles: [
+    `
+      .custom-menubar .pi {
+        color: #ff0000;
+      }
+      .custom-menubar .p-menubar-button {
+        display: none !important;
+      }
+    `,
+  ],
 })
 export class NavbarComponent {
-  items = [
-    { label: 'Inicio', icon: 'pi pi-home', routerLink: '/home' },
-    { label: 'Usuarios', icon: 'pi pi-users', routerLink: '/users' },
-  ];
+  constructor(private router: Router) {}
+  logout() {
+    sessionStorage.removeItem('token');
+    this.router.navigate(['/auth/sign-in']);
+  }
 }

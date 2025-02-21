@@ -2,119 +2,123 @@
 
 <div class="m-8"></div>
 
-<p-button
-  pRipple="true"
-  label="New Task"
-  icon="pi pi-plus"
-  styleClass="p-button-raised p-button-rounded"
-  (click)="openModal()"
-></p-button>
+<div class="flex justify-center">
+  <p-button
+    pRipple="true"
+    label="New Task"
+    icon="pi pi-plus"
+    styleClass="p-button-raised p-button-rounded"
+    (click)="openModal()"
+  ></p-button>
+</div>
 
 <div class="m-4"></div>
 
-<p-table
-  [value]="tasks()"
-  [paginator]="true"
-  [rows]="10"
-  responsiveLayout="scroll"
->
-  <ng-template pTemplate="header">
-    <tr>
-      <th>Title</th>
-      <th>Description</th>
-      <th>Completed</th>
-      <th>User</th>
-      <th>Actions</th>
-    </tr>
-  </ng-template>
+<div class="p-4">
+  <p-table
+    [value]="tasks()"
+    [paginator]="true"
+    [rows]="10"
+    responsiveLayout="scroll"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Completed</th>
+        <th>User</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
 
-  <ng-template pTemplate="body" let-task>
-    <tr>
-      <td>{{ task.title }}</td>
-      <td>{{ task.description }}</td>
-      <td>
+    <ng-template pTemplate="body" let-task>
+      <tr>
+        <td>{{ task.title }}</td>
+        <td>{{ task.description }}</td>
+        <td>
+          <p-checkbox
+            [binary]="true"
+            [ngModel]="task.completed"
+            disabled="true"
+          ></p-checkbox>
+        </td>
+        <td>{{ task.user.nombre }} - {{ task.user.email }}</td>
+        <td class="flex items-center space-x-2">
+          <button
+            pButton
+            icon="pi pi-pencil"
+            class="p-button-rounded p-button-info"
+            (click)="editTask(task)"
+          ></button>
+          <button
+            pButton
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-danger"
+            (click)="deleteTask(task)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-dialog
+    [(visible)]="taskDialog"
+    [header]="isEdit ? 'Edit Task' : 'New Task'"
+    [modal]="true"
+    [closable]="true"
+    [dismissableMask]="true"
+    class="w-96 p-6"
+  >
+    <div class="p-fluid space-y-4">
+      <div class="p-field">
+        <label for="title" class="block text-sm font-medium">Title</label>
+        <input
+          id="title"
+          type="text"
+          pInputText
+          [(ngModel)]="selectedTask.title"
+          class="p-inputtext p-component w-full px-4 py-2 border rounded-md"
+        />
+      </div>
+
+      <div class="p-field">
+        <label for="description" class="block text-sm font-medium"
+          >Description</label
+        >
+        <textarea
+          id="description"
+          pInputTextarea
+          [(ngModel)]="selectedTask.description"
+          class="p-inputtextarea p-component w-full px-4 py-2 border rounded-md"
+        ></textarea>
+      </div>
+
+      <div class="p-field flex items-center">
         <p-checkbox
+          id="completed"
           [binary]="true"
-          [ngModel]="task.completed"
-          disabled="true"
+          [(ngModel)]="selectedTask.completed"
+          class="mr-2"
         ></p-checkbox>
-      </td>
-      <td>{{ task.user.nombre }} - {{ task.user.email }}</td>
-      <td class="flex items-center space-x-2">
-        <button
-          pButton
-          icon="pi pi-pencil"
-          class="p-button-rounded p-button-info"
-          (click)="editTask(task)"
-        ></button>
-        <button
-          pButton
-          icon="pi pi-trash"
-          class="p-button-rounded p-button-danger"
-          (click)="deleteTask(task)"
-        ></button>
-      </td>
-    </tr>
-  </ng-template>
-</p-table>
-
-<p-dialog
-  [(visible)]="taskDialog"
-  [header]="isEdit ? 'Edit Task' : 'New Task'"
-  [modal]="true"
-  [closable]="true"
-  [dismissableMask]="true"
-  class="w-96 p-6"
->
-  <div class="p-fluid space-y-4">
-    <div class="p-field">
-      <label for="title" class="block text-sm font-medium">Title</label>
-      <input
-        id="title"
-        type="text"
-        pInputText
-        [(ngModel)]="selectedTask.title"
-        class="p-inputtext p-component w-full px-4 py-2 border rounded-md"
-      />
+        <label for="completed" class="text-sm font-medium">Completed</label>
+      </div>
     </div>
 
-    <div class="p-field">
-      <label for="description" class="block text-sm font-medium"
-        >Description</label
-      >
-      <textarea
-        id="description"
-        pInputTextarea
-        [(ngModel)]="selectedTask.description"
-        class="p-inputtextarea p-component w-full px-4 py-2 border rounded-md"
-      ></textarea>
-    </div>
-
-    <div class="p-field flex items-center">
-      <p-checkbox
-        id="completed"
-        [binary]="true"
-        [(ngModel)]="selectedTask.completed"
-        class="mr-2"
-      ></p-checkbox>
-      <label for="completed" class="text-sm font-medium">Completed</label>
-    </div>
-  </div>
-
-  <ng-template pTemplate="footer">
-    <button
-      pButton
-      label="Cancel"
-      icon="pi pi-times"
-      class="p-button-text"
-      (click)="taskDialog = false"
-    ></button>
-    <button
-      pButton
-      label="Save"
-      icon="pi pi-check"
-      class="p-button-primary"
-      (click)="saveTask()"
-    ></button>
-  </ng-template>
-</p-dialog>
+    <ng-template pTemplate="footer">
+      <button
+        pButton
+        label="Cancel"
+        icon="pi pi-times"
+        class="p-button-text"
+        (click)="taskDialog = false"
+      ></button>
+      <button
+        pButton
+        label="Save"
+        icon="pi pi-check"
+        class="p-button-primary"
+        (click)="saveTask()"
+      ></button>
+    </ng-template>
+  </p-dialog>
+</div>

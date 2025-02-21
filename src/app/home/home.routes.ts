@@ -6,11 +6,4 @@ export default [
         (m) => m.TaksPageComponent
       ),
   },
-  {
-    path: 'users',
-    loadComponent: () =>
-      import('./pages/user-page/user-page.component').then(
-        (m) => m.UserPageComponent
-      ),
-  },
 ];
